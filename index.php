@@ -13,23 +13,29 @@
 </head>
 
 <body class="container my-4">
-    <div class="container py-5">
-        <h1 class="mb-4">Lista de Tareas</h1>
-        <form id="taskForm" class="mb-4">
-            <div class="mb-3">
-                <label for="titulo" class="form-label">Título de la tarea</label>
-                <input type="text" class="form-control" id="titulo" name="titulo" required>
-            </div>
-            <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción de la tarea</label>
-                <input type="text" class="form-control" id="descripcion" name="descripcion" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
-        <ul class="list-group" id="taskList">
-            <!-- Aquí se mostrarán las tareas -->
-        </ul>
-    </div>
+
+    <!-- creamos el formulario para crear una nueva tarea -->
+    <form class="form-group" action="task/new_task.php" method="post">
+        <input type="hidden" name="action" value="new_task">
+        <div class="container py-5">
+            <h1 class="mb-4">Lista de Tareas</h1>
+            <form id="taskForm" class="mb-4">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título de la tarea</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción de la tarea</label>
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+            <ul class="list-group" id="taskList">
+                <!-- Aquí se mostrarán las tareas -->
+            </ul>
+        </div>
+    </form>
+    <!-- fin del formulario
     <!-- --------------------------------------------------------------------
  ---------------------------------------------------------------
  ---------------------- -->
@@ -55,6 +61,7 @@
                 <thead>
 
                     <tr>
+                        <th>ID</th>
                         <th>Titulo</th>
                         <th>Descripcion</th>
                         <th>Feche de creacion</th>
@@ -67,6 +74,34 @@
                 </thead>
 
                 <tbody>
+
+                    <!-- aqui se muestran las tareas -->
+                    <?php
+                     // importamos la conexion a la base de datos
+                        include_once ('clases/cls_conectarB.php');
+                        // creamos un objeto de la clase cls_conectarB
+                        $conexion = conectarBD();
+                        // preparamos la consulta
+                        $sSQL = "SELECT * FROM tareas";
+                        // ejecutamos la consulta
+                        $datos = $conexion->query($sSQL);
+
+                        // recorremos los datos
+                        foreach ($datos as $fila) {
+                            echo '<tr>';
+                            echo '<td>' . htmlspecialchars($fila['id']) . '</td>';
+                            
+                            echo '<td>' . htmlspecialchars($fila['titulo']) . '</td>';
+                            echo '<td>' . htmlspecialchars($fila['descripcion']) . '</td>';
+                            echo '<td>'  .'</td>';
+                            echo '<td>'  .'</td>';
+                            echo '<td><a href="task/edit_task.php?id=' . $fila['id'] . '" class="btn btn-warning" title="Editar Tarea"><i class="fas fa-edit"></i></a></td>';
+                            echo '<td><a href="task/delete_task.php?id=' . $fila['id'] . '" class="btn btn-danger" title="Borrar Tarea"><i class="fas fa-trash-alt"></i></a></td>';
+                            echo '</tr>';
+                        }
+
+
+                     ?>
                     <tr>
                         <td>primera tarea </td>
                         <td>esta tarea esta realizada manualmente</td>

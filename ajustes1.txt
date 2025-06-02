@@ -1,0 +1,36 @@
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+    <script src="lib/bootstrap/js/popper.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="lib/fontawesome/js/all.js"></script>
+
+<script>
+
+      $('#miTabla').DataTable( {
+          language: {
+              processing:     "Procesando...",
+              search:         "Buscar:",
+              lengthMenu:     "Mostrar _MENU_ elementos",
+              info:           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              infoEmpty:      "Ningún dato disponible en esta tabla",
+              infoFiltered:   "(filtrado de un total de _MAX_ registros)",
+              infoPostFix:    "",
+              loadingRecords: "Cargando...",
+              zeroRecords:    "No se encontraron resultados",
+              emptyTable:     "Ningún dato disponible en esta tabla",
+              paginate: {
+                  first:      "Primero",
+                  previous:   "Anterior",
+                  next:       "Siguiente",
+                  last:       "Ultimo"
+              },
+              aria: {
+                  sortAscending:  ": Activar para ordenar la columna de manera ascendente",
+                  sortDescending: ": Activar para ordenar la columna de manera descendente"
+              }
+          }
+      } );
+
+</script>

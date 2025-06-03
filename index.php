@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+<!-- <?php
+echo '<pre>';
+print_r($_GET);
+print_r($_POST);
+print_r($_REQUEST);
+echo '</pre>';
+?> -->
 
 <head>
     <!-- Required meta tags -->
@@ -15,21 +22,43 @@
 <body class="container my-4">
 
     <!-- creamos el formulario para crear una nueva tarea -->
-    <form class="form-group" action="task/new_task.php" method="post">
+     <!-- validamos si la accion es editar o nueva tarea -->
+      <?php
+      $accion = isset($_GET['accion']) ? $_GET['accion'] : 'Nueva Tarea';
+      if ($accion === 'Editar') {
+          $formAction = 'task/edit_task.php';
+          $buttonClass = 'btn-warning';
+          $buttonText = 'Actualizar';
+      } else {
+          $formAction = 'task/new_task.php';
+          $buttonClass = 'btn-primary';
+          $buttonText = 'Guardar';
+      }
+      ?>
+    <form class="form-group" action="<?php echo $formAction; ?>" method="post">
         <input type="hidden" name="action" value="new_task">
         <div class="container py-5">
-            <h1 class="mb-4">Lista de Tareas</h1>
-            <form id="taskForm" class="mb-4">
+            <?php
+            // Verificamos si hay una acción de edición
+            $accion = isset($_GET['accion']) ? $_GET['accion'] : 'Nueva Tarea';
+            $id = isset($_GET['id']) ? $_GET['id'] : '';
+            ?>
+            <h1 class="mb-4">Tareas</h1>
+            <!-- recibimos la accion editar o ponemos por defecto nueva tarea -->      
+            <h2 id="formTitle"> <?php echo $accion . ' ' . $id;?> </h2>      
+            <div class="mb-4">
                 <div class="mb-3">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
                     <label for="titulo" class="form-label">Título de la tarea</label>
-                    <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    <input type="text" class="form-control" id="titulo" name="titulo" required value="<?php echo isset($_GET['titulo']) ? htmlspecialchars($_GET['titulo']) : ''; ?>">
                 </div>
                 <div class="mb-3">
                     <label for="descripcion" class="form-label">Descripción de la tarea</label>
-                    <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                    <input type="text" class="form-control" id="descripcion" name="descripcion" required value="<?php echo isset($_GET['descripcion']) ? htmlspecialchars($_GET['descripcion']) : ''; ?>">
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-            </form>
+                <!-- evaluamos si la accion es editar o nueva tarea -->
+                <button type="submit" class="btn <?php echo $buttonClass; ?>"><?php echo $buttonText; ?></button>
+            </div>
             <ul class="list-group" id="taskList">
                 <!-- Aquí se mostrarán las tareas -->
             </ul>
@@ -42,14 +71,9 @@
     <div class="row my-3">
 
         <div class="col-10">
-            <h3><i class="fa fa-user-circle"></i> Lista de tareas</h3>
+            <h3><i class="fa fa-user-circle"></i> Lista de Tareas</h3>
         </div>
-        <div class="col-2">
-            <a href="****************" class="btn btn-primary" title="Crear un nuevo Contacto">
-                <i class="fas fa-plus-circle"></i>
-                Adicionar
-            </a>
-        </div>
+       
 
     </div>
 
@@ -95,14 +119,15 @@
                             echo '<td>' . htmlspecialchars($fila['descripcion']) . '</td>';
                             echo '<td>'  .'</td>';
                             echo '<td>'  .'</td>';
-                            echo '<td><a href="task/edit_task.php?id=' . $fila['id'] . '" class="btn btn-warning" title="Editar Tarea"><i class="fas fa-edit"></i></a></td>';
-                            echo '<td><a href="task/delete_task.php?id=' . $fila['id'] . '" class="btn btn-danger" title="Borrar Tarea"><i class="fas fa-trash-alt"></i></a></td>';
+                            echo '<td><a href="index.php?accion=Editar&id=' . $fila['id'] . '&titulo=' . $fila['titulo'] . '&descripcion=' . $fila['descripcion'] . '" class="btn btn-warning" title="Editar Tarea"><i class="fas fa-edit"></i></a></td>';
+                            echo '<td><a href="task/delete_task.php?accion=eliminar&id=' . $fila['id'] . '" class="btn btn-danger" title="Borrar Tarea"><i class="fas fa-trash-alt"></i></a></td>';
                             echo '</tr>';
                         }
 
 
                      ?>
-                    <tr>
+                    <!-- <tr>
+                        <td>99 </td>
                         <td>primera tarea </td>
                         <td>esta tarea esta realizada manualmente</td>
                         <td>01/06/2025</td>
@@ -117,7 +142,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
-                    </tr>
+                    </tr> -->
 
 
 
